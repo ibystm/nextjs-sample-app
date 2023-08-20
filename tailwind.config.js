@@ -13,6 +13,12 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
+    // NOTE: 1200pxまでならpxで指定できる
+    spacing: {
+      ...Object.fromEntries(
+        [...Array(1201)].map((_, i) => i).map((num) => [num, `${num}px`])
+      ),
+    },
   },
   plugins: [],
 }
