@@ -19,7 +19,12 @@ export default async function Top20Page() {
         <h2 className="text-lg py-16">Top 20 Article</h2>
         <ul>
           {top20Summary.map((item) => (
-            <li key={item.id} className="py-8 px-4">
+            <li
+              key={item.id}
+              // 擬似クラスが当たっている間に複数のスタイルを聴かせたい場合は、その都度擬似クラスを記述した上で,
+              // スタイリングする必要がある
+              className="py-8 px-4 hover:underline hover:text-sky-400"
+            >
               <Link href={`/top20/${item.id}`}>{item.title}</Link>
             </li>
           ))}
