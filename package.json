@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@markuplint/jsx-parser": "^3.9.0",
-    "@markuplint/react-spec": "^3.10.0"
+    "@markuplint/react-spec": "^3.10.0",
+    "plop": "^4.0.0"
   }
 }
