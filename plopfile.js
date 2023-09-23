@@ -2,9 +2,8 @@ module.exports = function (
   /** @type {import('plop').NodePlopAPI} */
   plop
 ) {
-  // controller generator
-  plop.setGenerator('controller', {
-    description: 'application controller logic',
+  plop.setGenerator('component and story', {
+    description: 'generate component file and storybook file',
     prompts: [
       {
         type: 'input',
