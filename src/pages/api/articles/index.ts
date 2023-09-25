@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    await delay(1500)
+    await delay(1000)
     const articles = JSON.parse(fs.readFileSync('articles.json', 'utf8'))
     articles.articles.sort((a: any, b: any) => {
       return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf()
