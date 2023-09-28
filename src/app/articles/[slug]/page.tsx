@@ -1,20 +1,10 @@
+import ArticleContent from './ArticleContent'
+import Comments from './Comments'
+import { Heading } from '../../common/chakraComponents'
+import LoadingComments from './LoadingComments'
 import { notFound } from 'next/navigation'
-import { Article, Comment } from '../../types'
+import { Article } from '@/app/types'
 import { Suspense } from 'react'
-import { Metadata, ResolvingMetadata } from 'next'
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-  parent?: ResolvingMetadata
-}): Promise<Metadata> {
-  const article = await getArticle(params.slug)
-  return {
-    title: article?.title,
-    description: article?.content,
-  }
-}
 
 const getArticle = async (slug: string) => {
   const res = await fetch(`http://localhost:3000/api/articles/${slug}`, {
@@ -55,31 +45,21 @@ export default async function ArticleDetail({
 }: {
   params: { slug: string }
 }) {
-  const article = await getArticle(params.slug)
+  const articlePromise = getArticle(params.slug)
+  const commentPromise = getComments(params.slug)
+
+  const article = await articlePromise
 
   return (
     <div>
-      <h1>{article.title}</h1>
-      <p>{article.content}</p>
-      <h2>Comments</h2>
-      <Suspense fallback={<div>Loading comments...</div>}>
-        <Comments commentPromise={getComments(params.slug)} />
+      <ArticleContent article={article} />
+      <Heading as="h2" mt={8} mb={4}>
+        Comments
+      </Heading>
+      <Suspense fallback={<LoadingComments />}>
+        {/* @ts-expect-error 現状は jsx が Promise を返すと TypeScript が型エラーを報告するが、将来的には解決される */}
+        <Comments commentPromise={commentPromise} />
       </Suspense>
     </div>
-  )
-}
-
-async function Comments({
-  commentPromise,
-}: {
-  commentPromise: Promise<Comment[]>
-}) {
-  const comments = await commentPromise
-  return (
-    <ul>
-      {comments.map((comment) => (
-        <li key={comment.id}>{comment.body}</li>
-      ))}
-    </ul>
   )
 }
