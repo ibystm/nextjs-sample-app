@@ -1,6 +1,11 @@
 import { Heading } from '@chakra-ui/react'
 import type { Article } from './types'
 import ArticleList from './components/ArticleList'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Blog App',
+}
 
 async function getArticles() {
   const res = await fetch('http://localhost:3000/api/articles', {

@@ -5,6 +5,20 @@ import LoadingComments from './LoadingComments'
 import { notFound } from 'next/navigation'
 import { Article } from '@/app/types'
 import { Suspense } from 'react'
+import type { Metadata, ResolvingMetadata } from 'next'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+  parent?: ResolvingMetadata
+}): Promise<Metadata> {
+  const article = await getArticle(params.slug)
+  return {
+    title: article?.title,
+    description: article?.content,
+  }
+}
 
 const getArticle = async (slug: string) => {
   const res = await fetch(`http://localhost:3000/api/articles/${slug}`, {
