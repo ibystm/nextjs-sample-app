@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation'
 import { Article, Comment } from '../../types'
 import { Suspense } from 'react'
-import { ResolvingMetadata } from 'next'
+import { Metadata, ResolvingMetadata } from 'next'
 
-export async function generateMetaData({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string; parent?: ResolvingMetadata }
-}) {
+  params: { slug: string }
+  parent?: ResolvingMetadata
+}): Promise<Metadata> {
   const article = await getArticle(params.slug)
   return {
     title: article?.title,
