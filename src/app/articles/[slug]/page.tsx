@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { Article, Comment } from '../../types'
+import { Suspense } from 'react'
 
 const getArticle = async (slug: string) => {
   const res = await fetch(`http://localhost:3000/api/articles/${slug}`, {
@@ -40,24 +41,31 @@ export default async function ArticleDetail({
 }: {
   params: { slug: string }
 }) {
-  const articlePromise = getArticle(params.slug)
-  const commentsPromise = getComments(params.slug)
-
-  const [article, comments] = await Promise.all([
-    articlePromise,
-    commentsPromise,
-  ])
+  const article = await getArticle(params.slug)
 
   return (
     <div>
       <h1>{article.title}</h1>
       <p>{article.content}</p>
       <h2>Comments</h2>
-      <ul>
-        {comments.map((comment) => (
-          <li key={comment.id}>{comment.body}</li>
-        ))}
-      </ul>
+      <Suspense fallback={<div>Loading comments...</div>}>
+        <Comments commentPromise={getComments(params.slug)} />
+      </Suspense>
     </div>
+  )
+}
+
+async function Comments({
+  commentPromise,
+}: {
+  commentPromise: Promise<Comment[]>
+}) {
+  const comments = await commentPromise
+  return (
+    <ul>
+      {comments.map((comment) => (
+        <li key={comment.id}>{comment.body}</li>
+      ))}
+    </ul>
   )
 }
