@@ -1,6 +1,19 @@
 import { notFound } from 'next/navigation'
 import { Article, Comment } from '../../types'
 import { Suspense } from 'react'
+import { ResolvingMetadata } from 'next'
+
+export async function generateMetaData({
+  params,
+}: {
+  params: { slug: string; parent?: ResolvingMetadata }
+}) {
+  const article = await getArticle(params.slug)
+  return {
+    title: article?.title,
+    description: article?.content,
+  }
+}
 
 const getArticle = async (slug: string) => {
   const res = await fetch(`http://localhost:3000/api/articles/${slug}`, {
