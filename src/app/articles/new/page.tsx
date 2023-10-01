@@ -2,6 +2,7 @@
 'use client'
 
 import { useState } from 'react'
+// App router の中で useRouterを使用するためには、next/routerではなく、next/navigationをimport
 import { useRouter } from 'next/navigation'
 import {
   Heading,
