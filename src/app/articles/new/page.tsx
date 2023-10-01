@@ -1,7 +1,7 @@
 // フォームによる状態管理を行う必要があるため、 use client
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 // App router の中で useRouterを使用するためには、next/routerではなく、next/navigationをimport
 import { useRouter } from 'next/navigation'
 import {
@@ -19,6 +19,8 @@ export default function CreateArticle() {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const [isPending, startTransition] = useTransition()
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -30,6 +32,10 @@ export default function CreateArticle() {
       body: JSON.stringify({ title, content }),
     })
     setLoading(false)
+    // トップページのキャッシュを無効にして、サーバーへのリクエストをしてから遷移する
+    startTransition(() => {
+      router.refresh()
+    })
     router.push('/')
   }
 
@@ -51,7 +57,7 @@ export default function CreateArticle() {
             type="submit"
             color="white"
             bg="orange.400"
-            isLoading={loading}
+            isLoading={loading || isPending}
             mt={4}
           >
             作成
