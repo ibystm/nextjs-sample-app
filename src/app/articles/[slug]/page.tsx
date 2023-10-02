@@ -1,6 +1,6 @@
 import ArticleContent from './ArticleContent'
 import Comments from './Comments'
-import { Button, Flex, Heading, Spacer } from '../../common/chakraComponents'
+import { Heading, Box, VStack } from '../../common/chakraComponents'
 import LoadingComments from './LoadingComments'
 import { notFound } from 'next/navigation'
 import { Article } from '@/app/types'
@@ -71,11 +71,13 @@ export default async function ArticleDetail({
       <Heading as="h2" mt={8} mb={4}>
         Comments
       </Heading>
-      <CommentInput />
-      <Suspense fallback={<LoadingComments />}>
-        {/* @ts-expect-error 現状は jsx が Promise を返すと TypeScript が型エラーを報告するが、将来的には解決される */}
-        <Comments commentPromise={commentPromise} />
-      </Suspense>
+      <VStack spacing={4} paddingInline={4} align="normal">
+        <CommentInput />
+        <Suspense fallback={<LoadingComments />}>
+          {/* @ts-expect-error 現状は jsx が Promise を返すと TypeScript が型エラーを報告するが、将来的には解決される */}
+          <Comments commentPromise={commentPromise} />
+        </Suspense>
+      </VStack>
     </div>
   )
 }
