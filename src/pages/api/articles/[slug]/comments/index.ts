@@ -20,4 +20,11 @@ export default async function handler(
     )
     res.status(200).json(comment)
   }
+
+  if (req.method === 'POST') {
+    console.log('is OK?')
+    await delay(1000)
+    // TODO:
+    await res.status(200).json('success')
+  }
 }

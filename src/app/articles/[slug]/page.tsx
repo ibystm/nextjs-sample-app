@@ -72,7 +72,7 @@ export default async function ArticleDetail({
         Comments
       </Heading>
       <VStack spacing={4} paddingInline={4} align="normal">
-        <CommentInput />
+        <CommentInput slug={params.slug} />
         <Suspense fallback={<LoadingComments />}>
           {/* @ts-expect-error 現状は jsx が Promise を返すと TypeScript が型エラーを報告するが、将来的には解決される */}
           <Comments commentPromise={commentPromise} />

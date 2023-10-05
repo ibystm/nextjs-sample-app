@@ -1,12 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { EventHandler, MouseEventHandler, useState } from 'react'
 import { Button, Flex, FormControl, Input } from '../../common/chakraComponents'
 
-export function CommentInput() {
+type Props = {
+  slug: string
+}
+
+export function CommentInput({ slug }: Props) {
+  console.log({ slug })
   const [comment, setComment] = useState('')
-  const handleClick = (): void => {
-    // commmentを追加する処理
+  const handleClick = async (): Promise<void> => {
+    console.log({ comment })
+    await fetch(`/api/articles/${slug}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ comment }),
+    })
   }
   return (
     <form>
